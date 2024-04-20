@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, ReactNode, FC, useState } from 'react'
+import { FC, ReactNode, createContext, useRef, useState } from 'react'
+import { Footer } from './Footer'
 
 // おそらく Session (User 情報と SECT) だけ Root ではいらない見込み。
 // ※ 更新用のメソッドは用意しているが、限定的なケースでしか更新しないこと (再レンダリングが走るため)
@@ -9,33 +10,52 @@ export interface User {
   name: string
 }
 
-export const UserContext = createContext<{
+export const RootContext = createContext<{
   user: User | null
   setUser: (user: User | null) => void
+  setErrorMessage: (message: string) => void
+  clearErrorMessage: () => void
 }>({
   user: null,
   setUser: () => {},
+  setErrorMessage: () => {},
+  clearErrorMessage: () => {},
 })
 
-interface UserProviderProps {
+interface RootProviderProps {
   children: ReactNode
 }
 
-export const UserProvider: FC<UserProviderProps> = ({
+export const RootProvider: FC<RootProviderProps> = ({
   children,
-}: {
-  children: React.ReactNode
-}) => {
+}: RootProviderProps) => {
   const [loginUser, setLoginUser] = useState<User | null>(null)
+  // 共有用に適当に Div にしているが、伝えたいことは Ref で持つことで制御しようということだけ。
+  const errorElementRef = useRef<HTMLDivElement>(null)
+
+  const setErrorMessage = (message: string) => {
+    // Element を Ref で保持しているので Style なども変化可能
+    errorElementRef.current!.style.color = 'red'
+    errorElementRef.current!.innerText = message
+  }
+
+  const clearErrorMessage = () => {
+    errorElementRef.current!.style.color = 'black'
+    errorElementRef.current!.innerText = 'error 領域(初期値)'
+  }
 
   return (
-    <UserContext.Provider
+    <RootContext.Provider
       value={{
         user: loginUser,
         setUser: setLoginUser,
+        setErrorMessage: setErrorMessage,
+        clearErrorMessage: clearErrorMessage,
       }}
     >
       {children}
-    </UserContext.Provider>
+      {/* Layout が SC 都合、このようにするしかない。CC にして良いなら Layout で行う */}
+      <Footer errorElementRef={errorElementRef}></Footer>
+    </RootContext.Provider>
   )
 }

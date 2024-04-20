@@ -21,20 +21,28 @@ app.use(
   }),
 )
 
+// 共有用の切り替え用フラグ
+let toggle = false
+
 // users
 app.get(BASE_URL + '/users', (req: any, res: any) => {
   res.setHeader('Content-Type', 'application/json')
-  setTimeout(() => {
-    res.json(users())
-  }, 1000)
+  toggle = !toggle
 
-  // res.status(500)
-  // setTimeout(() => {
-  //   res.json({
-  //     code: 'BASE-0000',
-  //     message: 'bbb',
-  //   })
-  // }, 1000)
+  if (toggle) {
+    res.status(200)
+    setTimeout(() => {
+      res.json(users())
+    }, 1000)
+  } else {
+    res.status(500)
+    setTimeout(() => {
+      res.json({
+        code: 'BASE-0000',
+        message: 'bbb',
+      })
+    }, 1000)
+  }
 })
 
 app.put(BASE_URL + '/users/:id', (req: any, res: any) => {
