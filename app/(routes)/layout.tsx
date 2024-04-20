@@ -4,6 +4,8 @@ import type { Metadata } from 'next'
 import { RootProvider } from './context'
 import theme from './theme'
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BATH_PATH
+
 export const metadata: Metadata = {
   title: 'KM UI',
 }
@@ -15,6 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href={`${BASE_PATH}/favicon.ico`} />
+      </head>
       <body>
         <AppRouterCacheProvider>
           {/* Session 情報をどこで、どうやって詰めるかは SC と CC とで結構違うはずなので今は適当 */}
