@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: "20.x"
+      - name: CI
+        working-directory: ./
+        run: |
+          npm ci
+          npm run format
+          npm run lint
+          npm run build
+          # npm run test
+        env:
+          # false の場合、worning レベルの場合はエラーにしない。
+          # ※ false だったとしても、test でのエラーは Actions は失敗する。
+          CI: false
