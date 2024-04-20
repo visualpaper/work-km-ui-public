@@ -183,6 +183,23 @@ Nextjs ではデフォルトで eslint が入っており、公式の linter 設
 * npm i query-string  
   ※ query 文字列を操作するもの。
 
+### Jest
+
+* npm i -D jest jest-environment-jsdom @types/jest @testing-library/react @testing-library/jest-dom  
+  ※ React と異なり、デフォで jest や react-testing-library がないので導入する必要があった。  
+  ※ jest.config.ts も追加しなければいけない点に注意  
+  (参照) https://nextjs.org/docs/app/building-your-application/testing/jest
+
+* 以下のように next.config.js ファイルでも exclude にコンパイル対象外と指定する必要がある。
+
+```
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
+```
+
 <br><br>
 
 ## build

@@ -22,7 +22,7 @@ jobs:
           npm run format
           npm run lint
           npm run build
-          # npm run test
+          npm run test
         env:
           # false の場合、worning レベルの場合はエラーにしない。
           # ※ false だったとしても、test でのエラーは Actions は失敗する。
