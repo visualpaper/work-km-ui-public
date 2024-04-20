@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser'
 import express from 'express'
+import cors from 'cors'
 import { users } from './data/users'
 
 const BASE_URL = '/km-server' + '/v1'
@@ -11,6 +12,14 @@ app.use(
   }),
 )
 app.use(bodyParser.json())
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200,
+  }),
+)
 
 // users
 app.get(BASE_URL + '/users', (req: any, res: any) => {
