@@ -38,7 +38,7 @@ app.get(BASE_URL + '/users', (req: any, res: any) => {
     res.status(500)
     setTimeout(() => {
       res.json({
-        code: 'BASE-0000',
+        code: 'BASE-0001',
         message: 'bbb',
       })
     }, 1000)
