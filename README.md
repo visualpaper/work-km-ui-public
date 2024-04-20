@@ -136,6 +136,10 @@ Nextjs ではデフォルトで eslint が入っており、公式の linter 設
   ※ 以下の設定は npm run start (development env) で利用される。npm run build (prod env) では利用されない機能となる。  
      (参照) https://create-react-app.dev/docs/proxying-api-requests-in-development/
 
+* npm i -D cors  
+* npm i -D @types/cors  
+  ※ NextJS の場合 package.json に proxy 追加してもダメだったので追加している。  
+
 * server 準備  
   ※ 他プロジェクトからコピペ
 
@@ -180,8 +184,14 @@ Nextjs ではデフォルトで eslint が入っており、公式の linter 設
 
 ### API
 
+* npm i swr  
+  ※ NextJS と親和性が高そうな気がしたので react-query でなくこちらを利用している。  
+  ※ react-query と異なり onError がないが、逆に本プロジェクトではやりやすいかもしれない。
+
 * npm i query-string  
   ※ query 文字列を操作するもの。
+
+<br>
 
 ### Jest
 
@@ -219,5 +229,53 @@ Nextjs ではデフォルトで eslint が入っており、公式の linter 設
 - npm run build  
   ※ ビルド
 
+- npm run test  
+  ※ UT/IT  
+
 - npm run start  
   ※ npm run build で作成した production 資材を元に稼働させる。
+
+<br><br>
+
+## CI
+
+Github Actions を利用している。  
+※ Github が使えないと思うので、push を検知し Jenkins とかで回す形になるのだと思う。  
+※ GitFlow でも Github Flow でもなんでも良いが、制限は main/master への push だけで後は自由にしてほしいのと、普通に PR でレビューしたい。  
+
+```
+name: CI
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: "20.x"
+      - name: CI
+        working-directory: ./
+        run: |
+          npm ci
+          npm run format
+          npm run lint
+          npm run build
+          npm run test
+        env:
+          # false の場合、worning レベルの場合はエラーにしない。
+          # ※ false だったとしても、test でのエラーは Actions は失敗する。
+          CI: false
+```
+
+<br><br>
+
+## CD
+
+おそらく実現自体が難しいはずなので、なしで良いと思っている。  
+※ コンテナ化する、ロールバックの方法を確立する、ルーティングの切り替えが簡単にできるなど、整える部分が多すぎる気がする。
