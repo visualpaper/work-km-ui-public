@@ -31,12 +31,13 @@ const KpsButton = styled(Button)(({ theme }) => ({
   },
 }))
 
-KpsButton.defaultProps = {
-  // 塗りつぶし
-  variant: 'contained',
-  // Click 時の Ripple(アニメーション) を off
-  disableRipple: true,
-  fullWidth: true,
-}
+// 最近以下の指定が非推奨になったらしいのでコメントアウト
+// KpsButton.defaultProps = {
+//   // 塗りつぶし
+//   variant: 'contained',
+//   // Click 時の Ripple(アニメーション) を off
+//   disableRipple: true,
+//   fullWidth: true,
+// }
 
 export default KpsButton

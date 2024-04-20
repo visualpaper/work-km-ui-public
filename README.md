@@ -186,7 +186,6 @@ Nextjs ではデフォルトで eslint が入っており、公式の linter 設
 
 * npm i swr  
   ※ NextJS と親和性が高そうな気がしたので react-query でなくこちらを利用している。  
-  ※ react-query と異なり onError がないが、逆に本プロジェクトではやりやすいかもしれない。
 
 * npm i query-string  
   ※ query 文字列を操作するもの。
